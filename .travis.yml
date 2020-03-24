@@ -1,0 +1,27 @@
+language: c
+jobs:
+  include:
+    - os: linux
+      dist: bionic
+    - os: osx
+
+addons:
+  apt:
+    packages:
+    - libsodium23
+    - libsodium-dev
+  homebrew:
+    packages:
+    - libsodium
+
+install:
+  - cd ${TRAVIS_BUILD_DIR}
+  - mkdir build/
+  - cd build/
+  - cmake ..
+  - make
+
+script:
+  - cd ${TRAVIS_BUILD_DIR}
+  - cd build/
+  - ctest ..
