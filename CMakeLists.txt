@@ -32,6 +32,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}")
 find_package(Sodium REQUIRED)
 
 include_directories(include)
+include_directories(ref10/include)
 include_directories(${sodium_INCLUDE_DIR})
 
 ##########
@@ -89,7 +90,6 @@ target_link_libraries(xeddsa_test_dynamic xeddsa_dynamic)
 target_link_libraries(xeddsa_static  crypto_sign_static  sodium)
 target_link_libraries(xeddsa_dynamic crypto_sign_dynamic sodium)
 target_include_directories(xeddsa_objects PUBLIC
-    ref10/include
     ref10/crypto_sign
     ref10/crypto_hash
     ref10/crypto_hashblocks
