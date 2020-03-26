@@ -33,7 +33,7 @@ The static and dynamic libraries will be located in `bin/` after the build, toge
 
 ### MacOS ###
 
-WIP: Updated as soon as I figure out how to install the dependencies on MacOS.
+To build the library from source on MacOS, `cmake` and `make` are required next to a C compiler and libsodium. CMake, make and libsodium can be installed from [Homebrew](https://brew.sh/) and are available in packages called `cmake`, `make` and `libsodium`.
 
 With everything installed, run the following steps to build the library and to run the tests:
 
