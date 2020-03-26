@@ -29,11 +29,24 @@ if (WIN32)
 endif (WIN32)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}")
+
+set(sodium_USE_STATIC_LIBS YES)
 find_package(Sodium REQUIRED)
+set(sodium_static_INCLUDE_DIR ${sodium_INCLUDE_DIR})
+
+set(sodium_USE_STATIC_LIBS NO)
+find_package(Sodium REQUIRED)
+set(sodium_dynamic_INCLUDE_DIR ${sodium_INCLUDE_DIR})
+
+if (WIN32)
+    file(COPY "${sodium_DLL_DEBUG}"   DESTINATION ${PROJECT_SOURCE_DIR}/bin/libsodium_debug.dll)
+    file(COPY "${sodium_DLL_RELEASE}" DESTINATION ${PROJECT_SOURCE_DIR}/bin/libsodium_release.dll)
+endif ()
 
 include_directories(include)
 include_directories(ref10/include)
-include_directories(${sodium_INCLUDE_DIR})
+include_directories(${sodium_static_INCLUDE_DIR})
+include_directories(${sodium_dynamic_INCLUDE_DIR})
 
 ##########
 # xeddsa #
@@ -48,6 +61,7 @@ set(xeddsa_sources
 add_library(xeddsa_objects OBJECT ${xeddsa_sources})
 
 set_property(TARGET xeddsa_objects PROPERTY POSITION_INDEPENDENT_CODE TRUE)
+target_compile_definitions(xeddsa_objects PRIVATE SODIUM_DLL_EXPORT)
 target_compile_definitions(xeddsa_objects PRIVATE BUILD)
 
 add_library(xeddsa_static  STATIC $<TARGET_OBJECTS:xeddsa_objects>)
@@ -71,6 +85,7 @@ set(xeddsa_test_sources
 
 add_library(xeddsa_test_objects OBJECT ${xeddsa_test_sources})
 
+target_compile_definitions(xeddsa_test_objects PRIVATE SODIUM_DLL_EXPORT)
 target_compile_definitions(xeddsa_test_objects PRIVATE BUILD)
 target_include_directories(xeddsa_test_objects PRIVATE test)
 
@@ -87,8 +102,8 @@ target_link_libraries(xeddsa_test_dynamic xeddsa_dynamic)
 # DEPENDENCIES #
 ################
 
-target_link_libraries(xeddsa_static  crypto_sign_static  sodium)
-target_link_libraries(xeddsa_dynamic crypto_sign_dynamic sodium)
+target_link_libraries(xeddsa_static  crypto_sign_static  sodium_static)
+target_link_libraries(xeddsa_dynamic crypto_sign_dynamic sodium_shared)
 target_include_directories(xeddsa_objects PUBLIC
     ref10/crypto_sign
     ref10/crypto_hash

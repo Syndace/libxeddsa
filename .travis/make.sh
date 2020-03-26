@@ -1,11 +1,11 @@
 cd ${TRAVIS_BUILD_DIR}/build/
 
-if [ "$TRAVIS_OS_NAME" = "osx" ]
+if [ "$TRAVIS_OS_NAME" = "linux" ]
 then
     make
 fi
 
-if [ "$TRAVIS_OS_NAME" = "linux" ]
+if [ "$TRAVIS_OS_NAME" = "osx" ]
 then
     make
 fi

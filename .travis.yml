@@ -17,31 +17,24 @@ addons:
     update: true
 
 before_install:
-- cd ${TRAVIS_BUILD_DIR}
-- source .travis/before_install.sh
+- source ${TRAVIS_BUILD_DIR}/.travis/before_install.sh
 
 install:
-- cd ${TRAVIS_BUILD_DIR}
-- mkdir build/
-- cd build/
-- cmake ..
-- source ../.travis/make.sh
+- source ${TRAVIS_BUILD_DIR}/.travis/cmake.sh
+- source ${TRAVIS_BUILD_DIR}/.travis/make.sh
 
 script:
-- cd ${TRAVIS_BUILD_DIR}
-- cd build/
-- ctest ..
+- source ${TRAVIS_BUILD_DIR}/.travis/test.sh
 
 before_deploy:
-- cd ${TRAVIS_BUILD_DIR}
-- source .travis/before_deploy.sh
+- source ${TRAVIS_BUILD_DIR}/.travis/before_deploy.sh
 
 deploy:
   provider: releases
   api_key:
     secure: aCsHV04AbsZ0Jt/TyVgwD4twNqiQCtr9pRvBZnGAzx73t8VRMHXOLWk+tSyZTxREzGscdBKN0RJyTHpbPdRpwGQfeMojV1hgzZtpZh3dXommDa1Sr73BfKG78tQPOR9++MFmLvH3HZczkGYqpX5rUiUE8Gio3GWsMB2r5WgiZiUi02LYwwGAC6MA9Ku9/D7gBOOu93LBFCmWE2iQH6bmwTy38HJ85BnwXCz0INMf781RufGyE5BRRWK4jTLX/wZowO/0hz2tf4y+aLigeGBDkOVnTtwlFF9pWOhFRH/JjfW6qpigA0wbmWjMuRqLE3Ik4jSj02D70+BUIxu3iBYkmpkrXjkCkOZ8cWPapHaJYMRmcQEnHFOtZRhjjkgT8w3qE/PIg/81gFlSvJUMJbQL4fsEb7pJMQkqLODpiCaGWBVdUc+l4m7q+jDzKsX4yKlXLPG7qwUD8A3JXlYHi0qsgdidLhXwsySSX8XTywXjJtv0UvMESFlwPvCqK08Z+ShA+Qw29UQBR4hgtPegT5H0syW1IM4V/do4QzJbjbRtnFymad/ipijlX1ZaUuS9OvoFsK5qPt/i3jd5LqffhDvFj42xVHngZPJj3Tp5Zvi2I82l9ZmeI0ogOsCeDq0ilymUKkasql7s6/ibByKpQKfczzGQabXiaMTmjrF47+6lDNM=
   file_glob: true
-  file: ${TRAVIS_BUILD_DIR}/bin/libxeddsa-*
+  file: libxeddsa-*
   skip_cleanup: true
   on:
     tags: true

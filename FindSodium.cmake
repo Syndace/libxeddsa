@@ -9,6 +9,10 @@
 #
 #     http://creativecommons.org/publicdomain/zero/1.0/
 #
+# Modified by Tim Henkes (Syndace) as part of libxeddsa to make it
+# possible to call find_package twice, to find both the shared library
+# and the static one.
+#
 ########################################################################
 # Tries to find the local libsodium installation.
 #
@@ -23,7 +27,8 @@
 #   sodium_LIBRARY_RELEASE
 #
 #
-# Furthermore an imported "sodium" target is created.
+# Furthermore, based on whether sodium_USE_STATIC_LIBS was set, an
+# imported "sodium_static" or "sodium_shared" target is created.
 #
 
 if (CMAKE_C_COMPILER_ID STREQUAL "GNU"
@@ -115,12 +120,14 @@ elseif (WIN32)
         string(REGEX REPLACE ".*ARCH_VALUE ([a-zA-Z0-9_]+).*" "\\1" _TARGET_ARCH "${_COMPILATION_LOG}")
 
         # construct library path
+        unset(_PLATFORM_PATH)
+
         if (_TARGET_ARCH STREQUAL "x86_32")
             string(APPEND _PLATFORM_PATH "Win32")
         elseif(_TARGET_ARCH STREQUAL "x86_64")
             string(APPEND _PLATFORM_PATH "x64")
         else()
-            message(FATAL_ERROR "the ${_TARGET_ARCH} architecture is not supported by Findsodium.cmake.")
+            message(FATAL_ERROR "the ${_TARGET_ARCH} architecture is not supported by FindSodium.cmake.")
         endif()
         string(APPEND _PLATFORM_PATH "/$$CONFIG$$")
 
@@ -250,41 +257,43 @@ endif()
 
 # create imported target
 if(sodium_USE_STATIC_LIBS)
-    set(_LIB_TYPE STATIC)
-else()
-    set(_LIB_TYPE SHARED)
-endif()
-add_library(sodium ${_LIB_TYPE} IMPORTED)
+    add_library(sodium_static STATIC IMPORTED)
 
-set_target_properties(sodium PROPERTIES
-    INTERFACE_INCLUDE_DIRECTORIES "${sodium_INCLUDE_DIR}"
-    IMPORTED_LINK_INTERFACE_LANGUAGES "C"
-)
+    set_target_properties(sodium_static PROPERTIES
+        INTERFACE_INCLUDE_DIRECTORIES "${sodium_INCLUDE_DIR}"
+        IMPORTED_LINK_INTERFACE_LANGUAGES "C"
+    )
 
-if (sodium_USE_STATIC_LIBS)
-    set_target_properties(sodium PROPERTIES
+    set_target_properties(sodium_static PROPERTIES
         INTERFACE_COMPILE_DEFINITIONS "SODIUM_STATIC"
         IMPORTED_LOCATION "${sodium_LIBRARY_RELEASE}"
         IMPORTED_LOCATION_DEBUG "${sodium_LIBRARY_DEBUG}"
     )
 else()
+    add_library(sodium_shared SHARED IMPORTED)
+
+    set_target_properties(sodium_shared PROPERTIES
+        INTERFACE_INCLUDE_DIRECTORIES "${sodium_INCLUDE_DIR}"
+        IMPORTED_LINK_INTERFACE_LANGUAGES "C"
+    )
+
     if (UNIX)
-        set_target_properties(sodium PROPERTIES
+        set_target_properties(sodium_shared PROPERTIES
             IMPORTED_LOCATION "${sodium_LIBRARY_RELEASE}"
             IMPORTED_LOCATION_DEBUG "${sodium_LIBRARY_DEBUG}"
         )
     elseif (WIN32)
-        set_target_properties(sodium PROPERTIES
+        set_target_properties(sodium_shared PROPERTIES
             IMPORTED_IMPLIB "${sodium_LIBRARY_RELEASE}"
             IMPORTED_IMPLIB_DEBUG "${sodium_LIBRARY_DEBUG}"
         )
         if (NOT (sodium_DLL_DEBUG MATCHES ".*-NOTFOUND"))
-            set_target_properties(sodium PROPERTIES
+            set_target_properties(sodium_shared PROPERTIES
                 IMPORTED_LOCATION_DEBUG "${sodium_DLL_DEBUG}"
             )
         endif()
         if (NOT (sodium_DLL_RELEASE MATCHES ".*-NOTFOUND"))
-            set_target_properties(sodium PROPERTIES
+            set_target_properties(sodium_shared PROPERTIES
                 IMPORTED_LOCATION_RELWITHDEBINFO "${sodium_DLL_RELEASE}"
                 IMPORTED_LOCATION_MINSIZEREL "${sodium_DLL_RELEASE}"
                 IMPORTED_LOCATION_RELEASE "${sodium_DLL_RELEASE}"
