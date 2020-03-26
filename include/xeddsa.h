@@ -1,8 +1,4 @@
-/**
- * @file
- *
- * (This is just here for Doxygen to generate the documentation.)
- */
+/** @file */
 
 #ifndef _XEDDSA_H_
 #define _XEDDSA_H_
