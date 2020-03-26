@@ -1,3 +1,6 @@
+[![Documentation Status](https://readthedocs.org/projects/libxeddsa/badge/?version=latest)](https://libxeddsa.readthedocs.io/en/latest/?badge=latest)
+[![Build Status](https://travis-ci.org/Syndace/libxeddsa.svg?branch=master)](https://travis-ci.org/Syndace/libxeddsa)
+
 # libxeddsa #
 
 An implementation of [XEdDSA](https://www.signal.org/docs/specifications/xeddsa/), based on ref10 by Daniel J. Bernstein.
