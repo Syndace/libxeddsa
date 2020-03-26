@@ -49,7 +49,19 @@ The static and dynamic libraries will be located in `bin/` after the build, toge
 
 ### Windows ###
 
-WIP
+To build the library from source on Windows, `cmake`, libsodium and a build environment like MinGW, MSYS or Visual Studio are required. CMake can be installed using the [binary installer package](https://cmake.org/download/) from CMake's website. libsodium headers and binaries are available on [libsodium's download page](https://download.libsodium.org/libsodium/releases/). The exact build process depends on you build environment. In general, the first step is to use CMake to create the build files for you build environment:
+
+```Bash
+$ mkdir build/
+$ cd build/
+$ cmake -G "YourBuildEnv" ..
+```
+
+where `YourBuildEnv` depends on your build environment. `cmake --help` lists available build systems you can pass to `-G`. If CMake has trouble locating libsodium, set the `sodium_DIR` environment variable to the directory containing the headers and the files.
+
+The next step is to build the library, which again depends on your build system. With MinGW for example, use `mingw32-make`.
+
+When the build is done, run `ctest ..` to run the tests.
 
 ## Bindings to other Programming Languages ##
 
