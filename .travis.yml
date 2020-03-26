@@ -4,6 +4,7 @@ jobs:
   - os: linux
     dist: bionic
   - os: osx
+  - os: windows
 
 addons:
   apt:
@@ -15,12 +16,16 @@ addons:
     - libsodium
     update: true
 
+before_install:
+- cd ${TRAVIS_BUILD_DIR}
+- source .travis/before_install.sh
+
 install:
 - cd ${TRAVIS_BUILD_DIR}
 - mkdir build/
 - cd build/
 - cmake ..
-- make
+- source ../.travis/make.sh
 
 script:
 - cd ${TRAVIS_BUILD_DIR}
@@ -29,7 +34,7 @@ script:
 
 before_deploy:
 - cd ${TRAVIS_BUILD_DIR}
-- ./.travis/before_deploy.sh
+- source .travis/before_deploy.sh
 
 deploy:
   provider: releases

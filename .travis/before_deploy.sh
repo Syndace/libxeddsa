@@ -1,5 +1,3 @@
-#!/bin/bash
-
 cd ${TRAVIS_BUILD_DIR}/bin/
 
 if [ "$TRAVIS_OS_NAME" = "osx" ]
