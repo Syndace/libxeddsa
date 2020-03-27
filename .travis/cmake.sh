@@ -4,12 +4,12 @@ cd build/
 
 if [ "$TRAVIS_OS_NAME" = "linux" ]
 then
-    cmake ..
+    FORCE_URANDOM= cmake ..
 fi
 
 if [ "$TRAVIS_OS_NAME" = "osx" ]
 then
-    cmake ..
+    FORCE_URANDOM= cmake ..
 fi
 
 if [ "$TRAVIS_OS_NAME" = "windows" ]
