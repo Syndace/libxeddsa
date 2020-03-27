@@ -14,9 +14,9 @@ if [ "$TRAVIS_OS_NAME" = "windows" ]
 then
     cp ../ref10/bin/*.dll ../bin/
 
-    mv ../bin/libsodium_debug.dll   ../bin/libsodium.dll
-    ctest -C Debug ..   || true
+    mv ../bin/libsodium_debug.dll ../bin/libsodium.dll
+    ctest -C Debug ..
 
     mv ../bin/libsodium_release.dll ../bin/libsodium.dll
-    ctest -C Release .. || true
+    ctest -C Release ..
 fi

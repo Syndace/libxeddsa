@@ -39,8 +39,13 @@ find_package(Sodium REQUIRED)
 set(sodium_dynamic_INCLUDE_DIR ${sodium_INCLUDE_DIR})
 
 if (WIN32)
-    file(COPY "${sodium_DLL_DEBUG}"   DESTINATION ${PROJECT_SOURCE_DIR}/bin/libsodium_debug.dll)
-    file(COPY "${sodium_DLL_RELEASE}" DESTINATION ${PROJECT_SOURCE_DIR}/bin/libsodium_release.dll)
+    file(COPY "${sodium_DLL_DEBUG}" DESTINATION "${PROJECT_SOURCE_DIR}/bin/")
+    get_filename_component(sodium_DLL_DEBUG_NAME "${sodium_DLL_DEBUG}" NAME)
+    file(RENAME "${PROJECT_SOURCE_DIR}/bin/${sodium_DLL_DEBUG_NAME}" "${PROJECT_SOURCE_DIR}/bin/libsodium_debug.dll")
+
+    file(COPY "${sodium_DLL_RELEASE}" DESTINATION "${PROJECT_SOURCE_DIR}/bin/")
+    get_filename_component(sodium_DLL_RELEASE_NAME "${sodium_DLL_RELEASE}" NAME)
+    file(RENAME "${PROJECT_SOURCE_DIR}/bin/${sodium_DLL_RELEASE_NAME}" "${PROJECT_SOURCE_DIR}/bin/libsodium_release.dll")
 endif ()
 
 include_directories(include)
