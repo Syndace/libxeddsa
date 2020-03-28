@@ -78,6 +78,42 @@ if (WIN32)
     set_target_properties(xeddsa_dynamic PROPERTIES IMPORT_SUFFIX ".lib")
 endif (WIN32)
 
+####################
+# combined library #
+####################
+
+add_library(combined_static STATIC CMakeLists.txt)
+set_target_properties(combined_static PROPERTIES LINKER_LANGUAGE C)
+target_link_libraries(combined_static PUBLIC
+    xeddsa_objects
+    crypto_sign_objects
+    crypto_hash_objects
+    crypto_hashblocks_objects
+    crypto_verify_objects
+    fastrandombytes_objects
+    crypto_rng_objects
+    crypto_stream_objects
+    crypto_core_objects
+    kernelrandombytes_objects
+    sodium_static
+)
+
+add_library(combined_dynamic SHARED CMakeLists.txt)
+set_target_properties(combined_dynamic PROPERTIES LINKER_LANGUAGE C)
+target_link_libraries(combined_dynamic PUBLIC
+    xeddsa_objects
+    crypto_sign_objects
+    crypto_hash_objects
+    crypto_hashblocks_objects
+    crypto_verify_objects
+    fastrandombytes_objects
+    crypto_rng_objects
+    crypto_stream_objects
+    crypto_core_objects
+    kernelrandombytes_objects
+    sodium_shared
+)
+
 ##########################
 # xeddsa test executable #
 ##########################
@@ -100,8 +136,8 @@ add_executable(xeddsa_test_dynamic $<TARGET_OBJECTS:xeddsa_test_objects>)
 target_include_directories(xeddsa_test_static  PRIVATE test)
 target_include_directories(xeddsa_test_dynamic PRIVATE test)
 
-target_link_libraries(xeddsa_test_static  xeddsa_static)
-target_link_libraries(xeddsa_test_dynamic xeddsa_dynamic)
+target_link_libraries(xeddsa_test_static  combined_static  sodium_static)
+target_link_libraries(xeddsa_test_dynamic combined_dynamic sodium_shared)
 
 ################
 # DEPENDENCIES #
