@@ -11,7 +11,7 @@ XEdDSA is also specified for Curve448/Ed448, which is not covered by this librar
 
 ## Installation ##
 
-Prebuilt binaries (x86/amd64) are available for Linux, MacOS and Windows and attached to [the releases](https://github.com/Syndace/libxeddsa/releases). The dynamic variants (`.so`, `.dylib` and `.dll`) require [libsodium](https://download.libsodium.org/doc/) to be installed on the system.
+Prebuilt binaries (for amd64) are available for Linux, MacOS and Windows and attached to [the releases](https://github.com/Syndace/libxeddsa/releases). The dynamic variants (`.so`, `.dylib` and `.dll`) require [libsodium](https://download.libsodium.org/doc/) to be installed on the system.
 
 The library can be built with [CMake](https://cmake.org/) and was tested to build successfully on Linux, MacOS and Windows.
 
@@ -67,7 +67,7 @@ When the build is done, run `ctest ..` to run the tests.
 
 | Language | Bindings | Notes |
 |----------|----------|-------|
-| Python   | [python-xeddsa](https://github.com/Syndace/python-xeddsa) | Provides an object-oriented interface next to raw ctype bindings. |
+| Python   | [python-xeddsa](https://github.com/Syndace/python-xeddsa) | Provides an object-oriented interface next to raw bindings. |
 
 ## A Note on Security ##
 
