@@ -33,12 +33,13 @@ static const uint8_t MINUS_ONE[32] = {
 };
 
 static void sc_clamp(uint8_t* scalar_out, const uint8_t* scalar_in) {
-    // A thread on clamping: https://moderncrypto.org/mail-archive/curves/2017/000858.html
+    // Mandated by RFC 7748: https://tools.ietf.org/html/rfc7748#page-8
+    // Referred to as "clamping": https://moderncrypto.org/mail-archive/curves/2017/000858.html
     for (uint8_t i = 0; i < 32; i++)
         scalar_out[i] = scalar_in[i];
 
     scalar_out[ 0] = scalar_in[ 0] & 248;
-    scalar_out[31] = scalar_in[31] & 63 | 64;
+    scalar_out[31] = scalar_in[31] & 127 | 64;
 }
 
 static void sc_neg(uint8_t* scalar_out, const uint8_t* scalar_in) {
