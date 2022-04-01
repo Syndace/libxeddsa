@@ -36,7 +36,7 @@ static const uint8_t MINUS_ONE[32] = {
  * @param scalar_in (in): The input scalar.
  */
 static void sc_clamp(uint8_t* scalar_out, const uint8_t* scalar_in) {
-    // Mandated by RFC 7748: https://tools.ietf.org/html/rfc7748#page-8
+    // Mandated by RFC 7748: https://tools.ietf.org/html/rfc7748#section-5
     // Referred to as "clamping": https://moderncrypto.org/mail-archive/curves/2017/000858.html
     for (uint8_t i = 0; i < 32; i++)
         scalar_out[i] = scalar_in[i];

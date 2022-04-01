@@ -13,7 +13,7 @@ Offers:
 
 Some of those features are offered by re-exporting functions from `libsodium <https://download.libsodium.org/doc/>`_, others are implemetations of the `XEdDSA <https://www.signal.org/docs/specifications/xeddsa/>`_ specification, using ref10 by Daniel J. Bernstein.
 
-The conversion functions utilize the birational maps between Curve25519 and Ed25519 defined in `RFC 7748 <https://tools.ietf.org/html/rfc7748>`_ (on page 5).
+The conversion functions utilize the birational maps between Curve25519 and Ed25519 defined in `RFC 7748, section 4.1 "Curve25519" <https://www.rfc-editor.org/rfc/rfc7748.html#section-4.1>`_.
 
 Note: XEdDSA is also specified for Curve448/Ed448, which is not covered by this library.
 
@@ -25,7 +25,7 @@ This library solves two problems regarding the conversion between Curve25519 and
 The Sign Bit
 ^^^^^^^^^^^^
 
-The birational maps define unique mappings between both elliptic curves. However, there is a small problem in practice: the serialization format for Curve25519 public keys (specified on page 4 of RFC 7748) omits *one bit* of information, which is not required for Diffie-Hellman on Curve25519, but is required for unique conversion into Ed25519 public keys. This one bit of missing information is what becomes the sign of the x coordinate when converted to Ed25519, thus it's called the *sign bit* here.
+The birational maps define unique mappings between both elliptic curves. However, there is a small problem in practice: the serialization format for Curve25519 public keys (specified in `RFC 7748, section 5 "The X25519 and X448 Functions" <https://www.rfc-editor.org/rfc/rfc7748.html#section-5>`_) omits *one bit* of information, which is not required for Diffie-Hellman on Curve25519, but is required for unique conversion into Ed25519 public keys. This one bit of missing information is what becomes the sign of the x coordinate when converted to Ed25519, thus it's called the *sign bit* here.
 
 There are two rather trivial ways to solve this issue:
 
