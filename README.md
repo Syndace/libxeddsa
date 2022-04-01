@@ -1,87 +1,57 @@
 [![Documentation Status](https://readthedocs.org/projects/libxeddsa/badge/?version=latest)](https://libxeddsa.readthedocs.io/en/latest/?badge=latest)
-[![Build Status](https://travis-ci.org/Syndace/libxeddsa.svg?branch=master)](https://travis-ci.org/Syndace/libxeddsa)
+[![Build Status](https://travis-ci.org/Syndace/libxeddsa.svg?branch=main)](https://travis-ci.org/Syndace/libxeddsa)
 
 # libxeddsa #
 
-An implementation of [XEdDSA](https://www.signal.org/docs/specifications/xeddsa/), based on ref10 by Daniel J. Bernstein.
+A toolkit around Curve25519 and Ed25519 key pairs, with a focus on conversion between the two.
 
-XEdDSA is a signature scheme that utilizes the birational maps between Curve25519 and Ed25519 (defined in [RFC 7748](https://tools.ietf.org/html/rfc7748) on page 5) to create and verify digital signatures with Curve25519 keys.
+Offers:
+- Conversion between Curve25519 and Ed25519 public keys
+- Extraction of private keys from seeds
+- Ed25519 digital signing using seeds or private keys
+- Ed25519 digital signature verification
+- X25519 Diffie-Hellman key agreement
 
-XEdDSA is also specified for Curve448/Ed448, which is not covered by this library.
+Some of those features are offered by re-exporting functions from [libsodium](https://download.libsodium.org/doc/), others are implemetations of the [XEdDSA](https://www.signal.org/docs/specifications/xeddsa/) specification, using ref10 by Daniel J. Bernstein.
+
+The conversion functions utilize the birational maps between Curve25519 and Ed25519 defined in [RFC 7748](https://tools.ietf.org/html/rfc7748) (on page 5).
+
+Note: XEdDSA is also specified for Curve448/Ed448, which is not covered by this library.
+
+## Which Problems does this Library Solve? ##
+
+This library solves two problems regarding the conversion between Curve25519 and Ed25519 key pairs.
+
+### The Sign Bit ###
+
+The birational maps define unique mappings between both elliptic curves. However, there is a small problem in practice: the serialization format for Curve25519 public keys (specified on page 4 of RFC 7748) omits _one bit_ of information, which is not required for Diffie-Hellman on Curve25519, but is required for unique conversion into Ed25519 public keys. This one bit of missing information is what becomes the sign of the x coordinate when converted to Ed25519, thus it's called the _sign bit_ here.
+
+There are two rather trivial ways to solve this issue:
+- Transfer the sign bit somehow (aka "invent your own Curve25519 public key serialization format")
+- Introduce some convention that makes the sign bit unique
+
+XEdDSA goes down the second route and defines that only those private keys shall be used whose corresponding public keys have a sign bit of zero. This solves the ambiguity, because during conversion, the sign bit can simply be fixed to zero.
+
+Both solutions are supported by this library.
+
+### Seeds vs. Private Keys ###
+
+The private keys of both Curve25519 and Ed25519 are technically scalars, which are multiplied by the base point of each curve to derive the respective public keys. The same private key works for both Curve25519 and Ed25519, thanks to the birational maps that are defined between the public keys. However, the Ed25519 specification doesn't give the private key to the user directly, instead they hand out a "seed", which the private key is derived from using a single application of SHA-512. Operations that require the private key, notably digital signing, always start by deriving the private key from the seed in the first step. This also means that digital signatures can't be generated using the APIs of libraries like libsodium, if you only have access the private key itself instead of a seed to derive it from.
+
+This library solves this issue by offering a digital signing function that accepts the private key itself and skips the initial derivation step.
 
 ## Installation ##
 
 Prebuilt binaries (for amd64) are available for Linux, MacOS and Windows and attached to [the releases](https://github.com/Syndace/libxeddsa/releases). The dynamic variants (`.so`, `.dylib` and `.dll`) require [libsodium](https://download.libsodium.org/doc/) to be installed on the system.
 
-The library can be built with [CMake](https://cmake.org/) and was tested to build successfully on Linux, MacOS and Windows.
-
-### Linux ###
-
-To build the library from source on Linux, `cmake` and `make` are required next to a C compiler and libsodium + development headers. On apt-based systems (Debian, Ubuntu, Mint) these are usually available in packages called `cmake`, `build-essential`, `libsodium-dev` and `libsodiumxx`, where `xx` is a two-digit number that differs between systems and versions (e.g. 23 on Debian Buster and 18 on Ubuntu 16.04).
-
-With everything installed, run the following steps to build the library and to run the tests:
-
-```Bash
-$ mkdir build/
-$ cd build/
-$ cmake ..
-$ make
-$ ctest ..
-```
-
-The static and dynamic libraries will be located in `bin/` after the build, together with the test executables.
-
-### MacOS ###
-
-To build the library from source on MacOS, `cmake` and `make` are required next to a C compiler and libsodium. CMake, make and libsodium can be installed from [Homebrew](https://brew.sh/) and are available in packages called `cmake`, `make` and `libsodium`.
-
-With everything installed, run the following steps to build the library and to run the tests:
-
-```Bash
-$ mkdir build/
-$ cd build/
-$ cmake ..
-$ make
-$ ctest ..
-```
-
-The static and dynamic libraries will be located in `bin/` after the build, together with the test executables.
-
-### Windows ###
-
-To build the library from source on Windows, `cmake`, libsodium and a build environment like MinGW, MSYS or Visual Studio are required. CMake can be installed using the [binary installer package](https://cmake.org/download/) from CMake's website. libsodium headers and binaries are available on [libsodium's download page](https://download.libsodium.org/libsodium/releases/). The exact build process depends on you build environment. In general, the first step is to use CMake to create the build files for you build environment:
-
-```Bash
-$ mkdir build/
-$ cd build/
-$ cmake -G "YourBuildEnv" ..
-```
-
-where `YourBuildEnv` depends on your build environment. `cmake --help` lists available build systems you can pass to `-G`. If CMake has trouble locating libsodium, set the `sodium_DIR` environment variable to the directory containing the headers and the files.
-
-The next step is to build the library, which again depends on your build system. With MinGW for example, use `mingw32-make`.
-
-When the build is done, run `ctest ..` to run the tests.
+Instructions for building from source can be found in [the documentation](https://libxeddsa.readthedocs.io/installation/).
 
 ## Bindings to other Programming Languages ##
 
 | Language | Bindings | Notes |
 |----------|----------|-------|
-| Python   | [python-xeddsa](https://github.com/Syndace/python-xeddsa) | Provides an object-oriented interface next to raw bindings. |
+| Python   | [python-xeddsa](https://github.com/Syndace/python-xeddsa) | Provides simple statically typed bindings. |
 
-## A Note on Security ##
+## Documentation ##
 
-This library tries to provide a secure implementation by
-
-- using only constant-time primitives with secret data,
-- not conditionally branching on secret data,
-- overwriting stack variables with zeros before returning to not leave any secret data on the stack.
-
-Please note that while these precautions are generally a good idea to make side-channel attacks harder, the code was not written by a cryptographer and was not audited either (yet).
-
-## A Note on Tests ##
-
-Sadly the XEdDSA specification does not provide test vectors. Thus, there are currently just two types of tests:
-
-- Do signatures created by this library validate with libsodium's Ed25519 implementation?
-- Is the conversion of public keys from Curve25519 to Ed25519 and back to Curve25519 unique?
+View the documentation on [readthedocs.io](https://libxeddsa.readthedocs.io/) or build it locally, which requires [Doxygen](https://www.doxygen.nl/index.html) and the Python packages listed in `docs/requirements.txt`. With all dependencies installed, run `make html` in the `docs/` directory. You can find the generated documentation in `docs/_build/html/`.

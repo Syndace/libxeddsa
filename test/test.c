@@ -1,11 +1,10 @@
-#include <test.h>
-
-#include <stdio.h>
 #include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #include <xeddsa.h>
 
-#include <sodium.h>
+#include <test.h>
 
 static void check(int result, bool* failed, const char* name) {
     if (result == 0) {
@@ -25,8 +24,9 @@ int main() {
         return EXIT_FAILURE;
     }
 
-    check(test_libsodium_compatibility(), &failed, "libsodium compatibility");
-    check(test_conversion_uniqueness(),   &failed, "public key conversion uniqueness");
+    check(test_signing(),               &failed, "private key/seed-based signing");
+    check(test_conversion_uniqueness(), &failed, "public key conversion uniqueness");
+    check(test_pub_derivation(),        &failed, "public key from private key/seed derivation");
 
     return failed ? EXIT_FAILURE : EXIT_SUCCESS;
 }

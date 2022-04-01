@@ -17,16 +17,15 @@
 import os
 import subprocess
 
-on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
-
+on_rtd = os.environ.get("READTHEDOCS", None) == "True"
 if on_rtd:
-    subprocess.call('doxygen')
+    subprocess.call("doxygen")
 
 # -- Project information -----------------------------------------------------
 
-project = 'libxeddsa'
-copyright = '2020, Tim Henkes (Syndace)'
-author = 'Tim Henkes (Syndace)'
+project = "libxeddsa"
+copyright = "2022, Tim Henkes (Syndace)"
+author = "Tim Henkes (Syndace)"
 
 
 # -- General configuration ---------------------------------------------------
@@ -36,18 +35,20 @@ author = 'Tim Henkes (Syndace)'
 # ones.
 extensions = [
     "breathe",
-    "sphinx_rtd_theme"
+    "sphinx_rtd_theme",
+    "sphinx.ext.viewcode",
+    "sphinx.ext.napoleon"
 ]
 
-breathe_projects = { 'libxeddsa': 'xml' }
+breathe_projects = { "libxeddsa": "xml" }
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+templates_path = [ "_templates" ]
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+exclude_patterns = [ "_build", "Thumbs.db", ".DS_Store" ]
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -55,9 +56,14 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'sphinx_rtd_theme'
+html_theme = "sphinx_rtd_theme"
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = [ "_static" ]
+
+
+# -- Options for the C++ domain ----------------------------------------------
+
+cpp_id_attributes = [ "INTERFACE" ]

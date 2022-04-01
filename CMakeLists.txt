@@ -58,9 +58,14 @@ include_directories(${sodium_dynamic_INCLUDE_DIR})
 ##########
 
 set(xeddsa_sources
+    src/ed25519.c
+    src/pub_conversion.c
+    src/pub_derivation.c
+    src/seed_priv_utils.c
+    src/utils.c
+    src/version.c
+    src/x25519.c
     src/xeddsa.c
-    src/curve25519_sign.c
-    src/curve25519_pub_to_ed25519_pub.c
 )
 
 add_library(xeddsa_objects OBJECT ${xeddsa_sources})
@@ -119,9 +124,10 @@ target_link_libraries(combined_dynamic PUBLIC
 ##########################
 
 set(xeddsa_test_sources
-    test/test.c
-    test/test_libsodium_compatibility.c
     test/test_conversion_uniqueness.c
+    test/test_pub_derivation.c
+    test/test_signing.c
+    test/test.c
 )
 
 add_library(xeddsa_test_objects OBJECT ${xeddsa_test_sources})
