@@ -40,7 +40,8 @@ int test_signing() {
             randombytes_buf(nonce, 64);
 
             // Generate a Curve25519 key pair
-            crypto_box_keypair(curve_pub, curve_priv);
+            randombytes_buf(curve_priv, 32);
+            priv_to_curve25519_pub(curve_pub, curve_priv);
 
             // Adjust the private key such that the sign of the derived Ed25519 public key is zero
             priv_force_sign(priv, curve_priv, 0);
@@ -52,7 +53,7 @@ int test_signing() {
             curve25519_pub_to_ed25519_pub(ed_pub, curve_pub, 0);
 
             // Verify the message using the converted public key.
-            if (crypto_sign_verify_detached(sig, msg, msg_size, ed_pub) != 0) {
+            if (ed25519_verify(sig, ed_pub, msg, msg_size) != 0) {
                 fprintf(stderr, "Signature built by private key signing is not valid.\n");
                 failed = true;
             }
@@ -62,7 +63,7 @@ int test_signing() {
             curve25519_pub_to_ed25519_pub(ed_pub, curve_pub, 1);
 
             // Verify the message using the converted public key.
-            if (crypto_sign_verify_detached(sig, msg, msg_size, ed_pub) == 0) {
+            if (ed25519_verify(sig, ed_pub, msg, msg_size) == 0) {
                 fprintf(stderr, "Signature that should be invalid was validated.\n");
                 failed = true;
             }
@@ -77,7 +78,7 @@ int test_signing() {
             curve25519_pub_to_ed25519_pub(ed_pub, curve_pub, 1);
 
             // Verify the message using the converted public key.
-            if (crypto_sign_verify_detached(sig, msg, msg_size, ed_pub) != 0) {
+            if (ed25519_verify(sig, ed_pub, msg, msg_size) != 0) {
                 fprintf(stderr, "Signature built by private key signing is not valid.\n");
                 failed = true;
             }
@@ -87,19 +88,20 @@ int test_signing() {
             curve25519_pub_to_ed25519_pub(ed_pub, curve_pub, 0);
 
             // Verify the message using the converted public key.
-            if (crypto_sign_verify_detached(sig, msg, msg_size, ed_pub) == 0) {
+            if (ed25519_verify(sig, ed_pub, msg, msg_size) == 0) {
                 fprintf(stderr, "Signature that should be invalid was validated.\n");
                 failed = true;
             }
 
             // Generate an Ed25519 key pair
-            crypto_sign_keypair(ed_pub, ed_seed);
+            randombytes_buf(ed_seed, 32);
+            seed_to_ed25519_pub(ed_pub, ed_seed);
 
             // Sign the message normally
             ed25519_seed_sign(sig, ed_seed, msg, msg_size);
 
             // Verify the message normally
-            if (crypto_sign_verify_detached(sig, msg, msg_size, ed_pub) != 0) {
+            if (ed25519_verify(sig, ed_pub, msg, msg_size) != 0) {
                 fprintf(stderr, "Signature built by seed signing is not valid.\n");
                 failed = true;
             }

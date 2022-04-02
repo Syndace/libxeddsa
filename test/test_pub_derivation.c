@@ -18,7 +18,8 @@ int test_pub_derivation() {
     // Test on a set of different key pairs
     for (uint32_t i = 0; i < NUM_KEY_PAIRS; i++) {
         // Generate a Curve25519 key pair
-        crypto_box_keypair(curve_pub_original, priv);
+        randombytes_buf(priv, 32);
+        priv_to_curve25519_pub(curve_pub_original, priv);
 
         // Derive the Curve25519 public key from the private key
         priv_to_curve25519_pub(curve_pub_derived, priv);
@@ -30,7 +31,8 @@ int test_pub_derivation() {
         }
 
         // Generate an Ed25519 key pair (seed + pub)
-        crypto_sign_keypair(ed_pub_original, seed);
+        randombytes_buf(seed, 32);
+        seed_to_ed25519_pub(ed_pub_original, seed);
 
         // Derive the Ed25519 public key from the seed (also tests private key from seed derivation)
         seed_to_ed25519_pub(ed_pub_derived, seed);

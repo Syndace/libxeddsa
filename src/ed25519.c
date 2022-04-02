@@ -97,8 +97,18 @@ void ed25519_priv_sign(uint8_t* sig,
  * @param msg_size (in): Size of the message to sign, in bytes.
  */
 void ed25519_seed_sign(uint8_t* sig, const uint8_t* seed, const uint8_t* msg, const uint32_t msg_size) {
+    // libsodium needs seed and public key in 64 adjacent bytes
+    uint8_t seed_and_pub[64];
+
+    for (uint8_t i = 0; i < 32; i++)
+        seed_and_pub[i] = seed[i];
+
+    seed_to_ed25519_pub(&seed_and_pub[32], seed);
+
     // Returns the constant value of 0, thus the return value can be ignored.
-    crypto_sign_ed25519_detached(sig, NULL, msg, msg_size, seed);
+    crypto_sign_ed25519_detached(sig, NULL, msg, msg_size, seed_and_pub);
+
+    sodium_memzero(seed_and_pub, sizeof(seed_and_pub));
 }
 
 /**

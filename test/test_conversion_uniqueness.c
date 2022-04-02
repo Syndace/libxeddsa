@@ -11,20 +11,21 @@
 
 int test_conversion_uniqueness() {
     uint8_t curve_priv[32], curve_pub_original[32], curve_pub_converted[32];
-    uint8_t ed_priv[32], ed_pub_original[32], ed_pub_converted[32];
+    uint8_t ed_seed[32], ed_pub_original[32], ed_pub_converted[32];
 
     bool failed = false;
 
     // Test on a set of different keys
     for (uint32_t i = 0; i < NUM_KEYS; i++) {
         // Generate a Curve25519 key pair (the private key is not used)
-        crypto_box_keypair(curve_pub_original, curve_priv);
+        randombytes_buf(curve_priv, 32);
+        priv_to_curve25519_pub(curve_pub_original, curve_priv);
 
         // Convert the Curve25519 public key to an Ed25519 public key
         curve25519_pub_to_ed25519_pub(ed_pub_converted, curve_pub_original, 0);
 
         // Convert the Ed25519 public key back into a Curve25519 public key
-        if (crypto_sign_ed25519_pk_to_curve25519(curve_pub_converted, ed_pub_converted) != 0) {
+        if (ed25519_pub_to_curve25519_pub(curve_pub_converted, ed_pub_converted) != 0) {
             fprintf(stderr, "Public key conversion from Ed25519 to Curve25519 failed.\n");
             failed = true;
         } else {
@@ -36,10 +37,11 @@ int test_conversion_uniqueness() {
         }
 
         // Generate an Ed25519 key pair (the private key is not used)
-        crypto_sign_keypair(ed_pub_original, ed_priv);
+        randombytes_buf(ed_seed, 32);
+        seed_to_ed25519_pub(ed_pub_original, ed_seed);
 
         // Convert the Ed25519 public key to a Curve25519 public key
-        if (crypto_sign_ed25519_pk_to_curve25519(curve_pub_converted, ed_pub_original) != 0) {
+        if (ed25519_pub_to_curve25519_pub(curve_pub_converted, ed_pub_original) != 0) {
             fprintf(stderr, "Public key conversion from Ed25519 to Curve25519 failed.\n");
             failed = true;
         } else {
