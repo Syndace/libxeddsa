@@ -42,7 +42,7 @@ This library solves this issue by offering a digital signing function that accep
 
 ## Installation ##
 
-Prebuilt binaries (for amd64) are available for Linux, MacOS and Windows and attached to [the releases](https://github.com/Syndace/libxeddsa/releases) (or not, see [Travis CI](#travis-ci) below). The dynamic variants (`.so`, `.dylib` and `.dll`) require [libsodium](https://download.libsodium.org/doc/) to be installed on the system.
+Prebuilt binaries (at least for amd64, possibly for arm64 too) are available for Linux, MacOS and Windows and attached to [the releases](https://github.com/Syndace/libxeddsa/releases) (or not, see [Travis CI](#travis-ci) below). The dynamic variants (`.so`, `.dylib` and `.dll`) require [libsodium](https://download.libsodium.org/doc/) to be installed on the system.
 
 Instructions for building from source can be found in [the documentation](https://libxeddsa.readthedocs.io/installation/).
 
