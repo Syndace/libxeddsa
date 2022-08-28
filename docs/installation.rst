@@ -50,6 +50,53 @@ The next step is to build the library, which again depends on your build system.
 
 When the build is done, run ``ctest ..`` to run the tests.
 
+Emscripten
+----------
+
+The library can be compiled for the web using `Emscripten <https://emscripten.org/>`_. To so so, `set up emsdk <https://emscripten.org/docs/getting_started/downloads.html>`_ and proceed as follows (instructions for Linux):
+
+Download and build libsodium with Emscripten
+""""""""""""""""""""""""""""""""""""""""""""
+
+libsodium supports compilation with Emscripten and comes with the scripts required to do so::
+
+    $ mkdir /tmp/libxeddsa-emscripten/
+    $ cd /tmp/libxeddsa-emscripten/
+    $ wget https://download.libsodium.org/libsodium/releases/libsodium-1.0.18-stable.tar.gz
+    $ tar xzf libsodium-1.0.18-stable.tar.gz
+    $ cd libsodium-stable/
+    $ dist-build/emscripten.sh --standard
+
+Download and build libxeddsa with Emscripten
+""""""""""""""""""""""""""""""""""""""""""""
+
+libxeddsa uses CMake, which is supported by Emscripten::
+
+    $ cd /tmp/libxeddsa-emscripten/
+    $ git clone https://github.com/Syndace/libxeddsa.git
+    $ cd libxeddsa/
+    $ mkdir build/
+    $ cd build/
+    $ export sodium_INCLUDE_DIR=/tmp/libxeddsa-emscripten/libsodium-stable/libsodium-js/include
+    $ export sodium_LIBRARY=/tmp/libxeddsa-emscripten/libsodium-stable/libsodium-js/lib/libsodium.a
+    $ emcmake cmake ..
+    $ emmake make
+    $ emcmake ctest ..
+
+Link the WebAssembly module
+"""""""""""""""""""""""""""
+
+With libsodium and libxeddsa compiled for Emscripten, the static libraries can be linked together and the relevant symbols exported::
+
+    $ cd /tmp/libxeddsa-emscripten/libxeddsa/bin/
+    $ emcc --no-entry -o libxeddsa.js -O3 \
+        -I ../include/ -I ../ref10/include/ -I $sodium_INCLUDE_DIR \
+        -L . -L $(dirname $sodium_LIBRARY) -l sodium -l combined_static \
+        -s EXPORTED_FUNCTIONS=$(cat ../emscripten/exported_functions.txt | tr -d "\n") \
+        -s EXPORTED_RUNTIME_METHODS=ccall,cwrap
+
+This creates the two files ``libxeddsa.js`` and ``libxeddsa.wasm``, which can now be embedded in a JavaScript application. The file ``emscripten/libxeddsa-wrapper.js`` can be loaded after the module is fully intialized (see `Emscripten's "Module.onRuntimeInitialized" <https://emscripten.org/docs/api_reference/module.html#Module.onRuntimeInitialized>`_) to create simple wrappers of the exported functions for direct use from JavaScript.
+
 Travis CI
 ---------
 

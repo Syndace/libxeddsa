@@ -11,7 +11,8 @@
 #
 # Modified by Tim Henkes (Syndace) as part of libxeddsa to make it
 # possible to call find_package twice, to find both the shared library
-# and the static one.
+# and the static one. Also allows statically specifying the location of
+# libsodium for Emscripten builds.
 #
 ########################################################################
 # Tries to find the local libsodium installation.
@@ -51,8 +52,28 @@ endif()
 
 
 ########################################################################
+# Emscripten
+if (EMSCRIPTEN)
+    if(NOT sodium_USE_STATIC_LIBS)
+        message(FATAL_ERROR "Only static libsodium builds are supported with Emscripten.")
+    endif()
+
+    if(NOT DEFINED ENV{sodium_INCLUDE_DIR})
+        message(FATAL_ERROR "The environment variable sodium_INCLUDE_DIR must point to the libsodium include directory of the Emscripten build.")
+    endif()
+
+    if(NOT DEFINED ENV{sodium_LIBRARY})
+        message(FATAL_ERROR "The environment variable sodium_LIBRARY must point to the libsodium static library of the Emscripten build.")
+    endif()
+
+    set(sodium_INCLUDE_DIR "$ENV{sodium_INCLUDE_DIR}")
+    set(sodium_LIBRARY_DEBUG "$ENV{sodium_LIBRARY}")
+    set(sodium_LIBRARY_RELEASE "$ENV{sodium_LIBRARY}")
+
+
+########################################################################
 # UNIX
-if (UNIX)
+elseif (UNIX)
     # import pkg-config
     find_package(PkgConfig QUIET)
     if (PKG_CONFIG_FOUND)
