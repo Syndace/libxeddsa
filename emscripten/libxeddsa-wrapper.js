@@ -3,7 +3,7 @@ ed25519_seed_sign = Module.cwrap("ed25519_seed_sign", null, [ "number", "array",
 ed25519_verify = Module.cwrap("ed25519_verify", "number", [ "array", "array", "array", "number" ])
 
 curve25519_pub_to_ed25519_pub = Module.cwrap("curve25519_pub_to_ed25519_pub", null, [ "number", "array", "number" ])
-ed25519_pub_to_curve25519_pub = Module.cwrap("ed25519_pub_to_curve25519_pub", "number", [ "array", "array" ])
+ed25519_pub_to_curve25519_pub = Module.cwrap("ed25519_pub_to_curve25519_pub", "number", [ "number", "array" ])
 
 priv_to_curve25519_pub = Module.cwrap("priv_to_curve25519_pub", null, [ "number", "array" ])
 priv_to_ed25519_pub = Module.cwrap("priv_to_ed25519_pub", null, [ "number", "array" ])
