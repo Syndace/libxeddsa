@@ -54,7 +54,7 @@ jobs:
     - name: Upload the binaries
       uses: actions/upload-artifact@v3.1.1
       with:
-        name: binaries-windows
+        name: libxeddsa-windows-amd64
         path: |
           bin/libxeddsa-windows-amd64.lib
           bin/libxeddsa-windows-amd64.dll.lib
@@ -112,7 +112,7 @@ jobs:
     - name: Upload the binaries on ubuntu-latest
       uses: actions/upload-artifact@v3.1.1
       with:
-        name: binaries-ubuntu
+        name: libxeddsa-linux-amd64
         path: |
           bin/libxeddsa-linux-amd64.a
           bin/libxeddsa-linux-amd64.so
@@ -121,7 +121,7 @@ jobs:
     - name: Upload the binaries on macos-latest
       uses: actions/upload-artifact@v3.1.1
       with:
-        name: binaries-macos
+        name: libxeddsa-macos-amd64
         path: |
           bin/libxeddsa-macos-amd64.a
           bin/libxeddsa-macos-amd64.dylib
