@@ -60,9 +60,8 @@ jobs:
       if: matrix.os == 'windows-latest'
 
     - name: Run MSBuild on windows-lastest
-      shell: bash
       run: |
-        cd build/
+        cd build
         msbuild libxeddsa.sln
       if: matrix.os == 'windows-latest'
 
