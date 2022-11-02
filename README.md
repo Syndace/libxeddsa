@@ -1,5 +1,4 @@
-[![Documentation Status](https://readthedocs.org/projects/libxeddsa/badge/?version=latest)](https://libxeddsa.readthedocs.io/en/latest/?badge=latest)
-[![Build Status](https://travis-ci.org/Syndace/libxeddsa.svg?branch=main)](https://travis-ci.org/Syndace/libxeddsa)
+[![Documentation Status](https://readthedocs.org/projects/libxeddsa/badge/?version=latest)](https://libxeddsa.readthedocs.io/)
 [![Build Status](https://github.com/Syndace/libxeddsa/actions/workflows/test-on-push.yml/badge.svg)](https://github.com/Syndace/libxeddsa/actions/workflows/test-on-push.yml)
 
 # libxeddsa #
