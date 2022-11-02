@@ -44,6 +44,22 @@ jobs:
         cd build
         ctest -C Release ..
 
+    - name: Rename the binaries
+      run: |
+        cd bin/
+        mv combined_static.lib  libxeddsa-windows-amd64.lib
+        mv combined_dynamic.lib libxeddsa-windows-amd64.dll.lib
+        mv combined_dynamic.dll libxeddsa-windows-amd64.dll
+
+    - name: Upload the binaries
+      uses: actions/upload-artifact@v3.1.1
+      with:
+        name: binaries-windows
+        path: |
+          bin/libxeddsa-windows-amd64.lib
+          bin/libxeddsa-windows-amd64.dll.lib
+          bin/libxeddsa-windows-amd64.dll
+
   build-ubuntu-macos:
     runs-on: ${{ matrix.os }}
 
@@ -67,7 +83,7 @@ jobs:
       run: |
         mkdir build/
         cd build/
-        cmake ..
+        FORCE_URANDOM= cmake ..
 
     - name: Run make
       run: |
@@ -78,3 +94,35 @@ jobs:
       run: |
         cd build/
         ctest ..
+
+    - name: Rename the binaries on ubuntu-latest
+      run: |
+        cd bin/
+        mv libcombined_static.a   libxeddsa-linux-amd64.a
+        mv libcombined_dynamic.so libxeddsa-linux-amd64.so
+      if: matrix.os == 'ubuntu-latest'
+
+    - name: Rename the binaries on macos-latest
+      run: |
+        cd bin/
+        mv libcombined_static.a      libxeddsa-macos-amd64.a
+        mv libcombined_dynamic.dylib libxeddsa-macos-amd64.dylib
+      if: matrix.os == 'macos-latest'
+
+    - name: Upload the binaries on ubuntu-latest
+      uses: actions/upload-artifact@v3.1.1
+      with:
+        name: binaries-ubuntu
+        path: |
+          bin/libxeddsa-linux-amd64.a
+          bin/libxeddsa-linux-amd64.so
+      if: matrix.os == 'ubuntu-latest'
+
+    - name: Upload the binaries on macos-latest
+      uses: actions/upload-artifact@v3.1.1
+      with:
+        name: binaries-macos
+        path: |
+          bin/libxeddsa-macos-amd64.a
+          bin/libxeddsa-macos-amd64.dylib
+      if: matrix.os == 'macos-latest'
