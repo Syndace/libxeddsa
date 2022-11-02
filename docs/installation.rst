@@ -1,7 +1,7 @@
 Installation
 ============
 
-Prebuilt binaries (for amd64) are available for Linux, MacOS and Windows and attached to `the releases <https://github.com/Syndace/libxeddsa/releases>`_ (or not, see "Travis CI" below). The dynamic variants (``.so``, ``.dylib`` and ``.dll``) require `libsodium <https://download.libsodium.org/doc/>`_ to be installed on the system.
+Prebuilt binaries (at least for amd64, possibly for arm64 too) are available for Linux, MacOS and Windows and attached to `the releases <https://github.com/Syndace/libxeddsa/releases>`_. The dynamic variants (``.so``, ``.dylib`` and ``.dll``) require `libsodium <https://download.libsodium.org/doc/>`_ to be installed on the system.
 
 The library can be built with `CMake <https://cmake.org/>`_ and was tested to build successfully on Linux, MacOS and Windows.
 
@@ -96,8 +96,3 @@ With libsodium and libxeddsa compiled for Emscripten, the static libraries can b
         -s EXPORTED_RUNTIME_METHODS=ccall,cwrap
 
 This creates the two files ``libxeddsa.js`` and ``libxeddsa.wasm``, which can now be embedded in a JavaScript application. The file ``emscripten/libxeddsa-wrapper.js`` can be loaded after the module is fully intialized (see `Emscripten's "Module.onRuntimeInitialized" <https://emscripten.org/docs/api_reference/module.html#Module.onRuntimeInitialized>`_) to create simple wrappers of the exported functions for direct use from JavaScript.
-
-Travis CI
----------
-
-The project used to be built using Travis CI, which was amazing. Sadly, Travis fully closed their open-source support. I have yet to migrate somewhere else, until then the project will not be automatically tested and the binaries attached to releases may be incomplete, since I might not have access to the hardware/operating systems to build all of them.

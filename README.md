@@ -1,5 +1,6 @@
 [![Documentation Status](https://readthedocs.org/projects/libxeddsa/badge/?version=latest)](https://libxeddsa.readthedocs.io/en/latest/?badge=latest)
 [![Build Status](https://travis-ci.org/Syndace/libxeddsa.svg?branch=main)](https://travis-ci.org/Syndace/libxeddsa)
+[![Build Status](https://github.com/Syndace/libxeddsa/actions/workflows/test-on-push.yml/badge.svg)](https://github.com/Syndace/libxeddsa/actions/workflows/test-on-push.yml)
 
 # libxeddsa #
 
@@ -42,7 +43,7 @@ This library solves this issue by offering a digital signing function that accep
 
 ## Installation ##
 
-Prebuilt binaries (at least for amd64, possibly for arm64 too) are available for Linux, MacOS and Windows and attached to [the releases](https://github.com/Syndace/libxeddsa/releases) (or not, see [Travis CI](#travis-ci) below). The dynamic variants (`.so`, `.dylib` and `.dll`) require [libsodium](https://download.libsodium.org/doc/) to be installed on the system.
+Prebuilt binaries (at least for amd64, possibly for arm64 too) are available for Linux, MacOS and Windows and attached to [the releases](https://github.com/Syndace/libxeddsa/releases). The dynamic variants (`.so`, `.dylib` and `.dll`) require [libsodium](https://download.libsodium.org/doc/) to be installed on the system.
 
 Instructions for building from source, including compilation to WebAssembly using Emscripten, can be found in [the documentation](https://libxeddsa.readthedocs.io/).
 
@@ -55,7 +56,3 @@ Instructions for building from source, including compilation to WebAssembly usin
 ## Documentation ##
 
 View the documentation on [readthedocs.io](https://libxeddsa.readthedocs.io/) or build it locally, which requires [Doxygen](https://www.doxygen.nl/index.html) and the Python packages listed in `docs/requirements.txt`. With all dependencies installed, run `make html` in the `docs/` directory. You can find the generated documentation in `docs/_build/html/`.
-
-## Travis CI ##
-
-The project used to be built using Travis CI, which was amazing. Sadly, Travis fully closed their open-source support. I have yet to migrate somewhere else, until then the project will not be automatically tested and the binaries attached to releases may be incomplete, since I might not have access to the hardware/operating systems to build all of them.
