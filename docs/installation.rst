@@ -1,14 +1,14 @@
 Installation
 ============
 
-Prebuilt binaries (at least for amd64, possibly for arm64 too) are available for Linux, MacOS and Windows and attached to `the releases <https://github.com/Syndace/libxeddsa/releases>`_. The dynamic variants (``.so``, ``.dylib`` and ``.dll``) require `libsodium <https://download.libsodium.org/doc/>`_ to be installed on the system.
+Prebuilt binaries are available for Linux (amd64), MacOS (amd64 & arm64) and Windows (amd64) and attached to `the releases <https://github.com/Syndace/libxeddsa/releases>`_. They can also be found in the build artifacts of the `Build & Test workflow <https://github.com/Syndace/libxeddsa/actions/workflows/build-and-test.yml>`_. To use libxeddsa, `libsodium <https://download.libsodium.org/doc/>`_ has to be installed on the system.
 
 The library can be built with `CMake <https://cmake.org/>`_ and was tested to build successfully on Linux, MacOS and Windows.
 
 Linux
 -----
 
-To build the library from source on Linux, ``cmake`` and ``make`` are required next to a C compiler and libsodium + development headers. On apt-based systems (Debian, Ubuntu, Mint) these are usually available in packages called ``cmake``, ``build-essential``, ``libsodium-dev`` and ``libsodiumxx``, where ``xx`` is a two-digit number that differs between systems and versions (e.g. 23 on Debian Bullseye and 18 on Ubuntu 16.04).
+To build the library from source on Linux, ``cmake`` and ``make`` are required next to a C compiler and libsodium + development headers. On apt-based systems (Debian, Ubuntu, Mint) these are usually available in packages called ``cmake``, ``build-essential``, ``libsodium-dev`` and ``libsodiumxx``, where ``xx`` is a two-digit number that differs between systems and versions (e.g. 23 on the latest Debian and Ubuntu).
 
 With everything installed, run the following steps to build the library and to run the tests::
 
