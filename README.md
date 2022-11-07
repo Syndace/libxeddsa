@@ -1,5 +1,5 @@
 [![Documentation Status](https://readthedocs.org/projects/libxeddsa/badge/?version=latest)](https://libxeddsa.readthedocs.io/)
-[![Build Status](https://github.com/Syndace/libxeddsa/actions/workflows/test-on-push.yml/badge.svg)](https://github.com/Syndace/libxeddsa/actions/workflows/test-on-push.yml)
+[![Build Status](https://github.com/Syndace/libxeddsa/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/Syndace/libxeddsa/actions/workflows/build-and-test.yml)
 
 # libxeddsa #
 
@@ -42,7 +42,7 @@ This library solves this issue by offering a digital signing function that accep
 
 ## Installation ##
 
-Prebuilt binaries (at least for amd64, possibly for arm64 too) are available for Linux, MacOS and Windows and attached to [the releases](https://github.com/Syndace/libxeddsa/releases). The dynamic variants (`.so`, `.dylib` and `.dll`) require [libsodium](https://download.libsodium.org/doc/) to be installed on the system.
+Prebuilt binaries are available for Linux (amd64), MacOS (amd64 & arm64) and Windows (amd64) and attached to [the releases](https://github.com/Syndace/libxeddsa/releases). They can also be found in the build artifacts of the [Build & Test workflow](https://github.com/Syndace/libxeddsa/actions/workflows/build-and-test.yml). The dynamic variants (`.so`, `.dylib` and `.dll`) require [libsodium](https://download.libsodium.org/doc/) to be installed on the system.
 
 Instructions for building from source, including compilation to WebAssembly using Emscripten, can be found in [the documentation](https://libxeddsa.readthedocs.io/).
 
