@@ -66,9 +66,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Install libsodium, a dependency of python-xeddsa
-      run: brew install libsodium
-
     - name: Run cmake
       run: |
         mkdir build/
@@ -106,7 +103,12 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Install libsodium, a dependency of python-xeddsa
-      run: brew install libsodium
+      run: |
+        brew uninstall --ignore-dependencies libsodium
+        brew fetch --force --bottle-tag=arm64_ventura libsodium | tee brew_output
+        downloaded_to=$(grep "Downloaded to" brew_output)
+        downloaded_to_split=($downloaded_to)
+        brew install ${downloaded_to_split[2]}
 
     - name: Run cmake
       run: |
