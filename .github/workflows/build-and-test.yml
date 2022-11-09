@@ -47,9 +47,9 @@ jobs:
       - name: Rename the binaries
         run: |
           cd bin/
-          mv static/libxeddsa.lib  libxeddsa-windows-amd64.lib
-          mv dynamic/libxeddsa.lib libxeddsa-windows-amd64.dll.lib
-          mv dynamic/libxeddsa.dll libxeddsa-windows-amd64.dll
+          mv xeddsa_static.lib libxeddsa-windows-amd64.lib
+          mv xeddsa.lib libxeddsa-windows-amd64.dll.lib
+          mv xeddsa.dll libxeddsa-windows-amd64.dll
 
       - name: Upload the binaries
         uses: actions/upload-artifact@v3.1.1
