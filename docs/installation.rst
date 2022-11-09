@@ -48,7 +48,7 @@ where ``YourBuildEnv`` depends on your build environment. ``cmake --help`` lists
 
 The next step is to build the library, which again depends on your build system. With MinGW for example, use ``mingw32-make``.
 
-When the build is done, run ``ctest ..`` to run the tests.
+When the build is done, run ``ctest -C Debug ..`` to run the tests in debug configuration, and ``ctest -C Release ..`` to run them in release configuration.
 
 Emscripten
 ----------

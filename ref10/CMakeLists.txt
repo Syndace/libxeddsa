@@ -45,15 +45,15 @@ if (NOT (UNIX OR WIN32))
     message(FATAL_ERROR "Unsupported operating system (neither UNIX nor Windows). CMake will exit.")
 endif ()
 
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin/static)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin/dynamic)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
 foreach (OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES})
     string(TOUPPER ${OUTPUTCONFIG} OUTPUTCONFIG)
+    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${PROJECT_SOURCE_DIR}/bin/static)
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${PROJECT_SOURCE_DIR}/bin/dynamic)
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${PROJECT_SOURCE_DIR}/bin)
-    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${PROJECT_SOURCE_DIR}/bin)
-    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${PROJECT_SOURCE_DIR}/bin)
 endforeach ()
 
 if (WIN32)
@@ -86,6 +86,8 @@ target_include_directories(crypto_core_objects PUBLIC  crypto_core)
 
 add_library(crypto_core_static  STATIC $<TARGET_OBJECTS:crypto_core_objects>)
 add_library(crypto_core_dynamic SHARED $<TARGET_OBJECTS:crypto_core_objects>)
+set_target_properties(crypto_core_static  PROPERTIES OUTPUT_NAME crypto_core)
+set_target_properties(crypto_core_dynamic PROPERTIES OUTPUT_NAME crypto_core)
 
 if (WIN32)
     # Correct the import library.
@@ -109,6 +111,8 @@ target_include_directories(crypto_hash_objects PUBLIC  crypto_hash)
 
 add_library(crypto_hash_static  STATIC $<TARGET_OBJECTS:crypto_hash_objects>)
 add_library(crypto_hash_dynamic SHARED $<TARGET_OBJECTS:crypto_hash_objects>)
+set_target_properties(crypto_hash_static  PROPERTIES OUTPUT_NAME crypto_hash)
+set_target_properties(crypto_hash_dynamic PROPERTIES OUTPUT_NAME crypto_hash)
 
 if (WIN32)
     # Correct the import library.
@@ -132,6 +136,8 @@ target_include_directories(crypto_hashblocks_objects PUBLIC  crypto_hashblocks)
 
 add_library(crypto_hashblocks_static  STATIC $<TARGET_OBJECTS:crypto_hashblocks_objects>)
 add_library(crypto_hashblocks_dynamic SHARED $<TARGET_OBJECTS:crypto_hashblocks_objects>)
+set_target_properties(crypto_hashblocks_static  PROPERTIES OUTPUT_NAME crypto_hashblocks)
+set_target_properties(crypto_hashblocks_dynamic PROPERTIES OUTPUT_NAME crypto_hashblocks)
 
 if (WIN32)
     # Correct the import library.
@@ -155,6 +161,8 @@ target_include_directories(crypto_rng_objects PUBLIC  crypto_rng)
 
 add_library(crypto_rng_static  STATIC $<TARGET_OBJECTS:crypto_rng_objects>)
 add_library(crypto_rng_dynamic SHARED $<TARGET_OBJECTS:crypto_rng_objects>)
+set_target_properties(crypto_rng_static  PROPERTIES OUTPUT_NAME crypto_rng)
+set_target_properties(crypto_rng_dynamic PROPERTIES OUTPUT_NAME crypto_rng)
 
 if (WIN32)
     # Correct the import library.
@@ -191,6 +199,8 @@ target_include_directories(crypto_scalarmult_objects PUBLIC  crypto_scalarmult)
 
 add_library(crypto_scalarmult_static  STATIC $<TARGET_OBJECTS:crypto_scalarmult_objects>)
 add_library(crypto_scalarmult_dynamic SHARED $<TARGET_OBJECTS:crypto_scalarmult_objects>)
+set_target_properties(crypto_scalarmult_static  PROPERTIES OUTPUT_NAME crypto_scalarmult)
+set_target_properties(crypto_scalarmult_dynamic PROPERTIES OUTPUT_NAME crypto_scalarmult)
 
 if (WIN32)
     # Correct the import library.
@@ -252,6 +262,8 @@ target_include_directories(crypto_sign_objects PUBLIC  crypto_sign)
 
 add_library(crypto_sign_static  STATIC $<TARGET_OBJECTS:crypto_sign_objects>)
 add_library(crypto_sign_dynamic SHARED $<TARGET_OBJECTS:crypto_sign_objects>)
+set_target_properties(crypto_sign_static  PROPERTIES OUTPUT_NAME crypto_sign)
+set_target_properties(crypto_sign_dynamic PROPERTIES OUTPUT_NAME crypto_sign)
 
 if (WIN32)
     # Correct the import library.
@@ -276,6 +288,8 @@ target_include_directories(crypto_stream_objects PUBLIC  crypto_stream)
 
 add_library(crypto_stream_static  STATIC $<TARGET_OBJECTS:crypto_stream_objects>)
 add_library(crypto_stream_dynamic SHARED $<TARGET_OBJECTS:crypto_stream_objects>)
+set_target_properties(crypto_stream_static  PROPERTIES OUTPUT_NAME crypto_stream)
+set_target_properties(crypto_stream_dynamic PROPERTIES OUTPUT_NAME crypto_stream)
 
 if (WIN32)
     # Correct the import library.
@@ -299,6 +313,8 @@ target_include_directories(crypto_verify_objects PUBLIC  crypto_verify)
 
 add_library(crypto_verify_static  STATIC $<TARGET_OBJECTS:crypto_verify_objects>)
 add_library(crypto_verify_dynamic SHARED $<TARGET_OBJECTS:crypto_verify_objects>)
+set_target_properties(crypto_verify_static  PROPERTIES OUTPUT_NAME crypto_verify)
+set_target_properties(crypto_verify_dynamic PROPERTIES OUTPUT_NAME crypto_verify)
 
 if (WIN32)
     # Correct the import library.
@@ -322,6 +338,8 @@ target_include_directories(fastrandombytes_objects PUBLIC  fastrandombytes)
 
 add_library(fastrandombytes_static  STATIC $<TARGET_OBJECTS:fastrandombytes_objects>)
 add_library(fastrandombytes_dynamic SHARED $<TARGET_OBJECTS:fastrandombytes_objects>)
+set_target_properties(fastrandombytes_static  PROPERTIES OUTPUT_NAME fastrandombytes)
+set_target_properties(fastrandombytes_dynamic PROPERTIES OUTPUT_NAME fastrandombytes)
 
 if (WIN32)
     # Correct the import library.
@@ -396,6 +414,8 @@ target_include_directories(kernelrandombytes_objects PUBLIC  kernelrandombytes)
 
 add_library(kernelrandombytes_static  STATIC $<TARGET_OBJECTS:kernelrandombytes_objects>)
 add_library(kernelrandombytes_dynamic SHARED $<TARGET_OBJECTS:kernelrandombytes_objects>)
+set_target_properties(kernelrandombytes_static  PROPERTIES OUTPUT_NAME kernelrandombytes)
+set_target_properties(kernelrandombytes_dynamic PROPERTIES OUTPUT_NAME kernelrandombytes)
 
 if (WIN32)
     # Correct the import library.

@@ -47,9 +47,9 @@ jobs:
       - name: Rename the binaries
         run: |
           cd bin/
-          mv combined_static.lib  libxeddsa-windows-amd64.lib
-          mv combined_dynamic.lib libxeddsa-windows-amd64.dll.lib
-          mv combined_dynamic.dll libxeddsa-windows-amd64.dll
+          mv static/libxeddsa.lib  libxeddsa-windows-amd64.lib
+          mv dynamic/libxeddsa.lib libxeddsa-windows-amd64.dll.lib
+          mv dynamic/libxeddsa.dll libxeddsa-windows-amd64.dll
 
       - name: Upload the binaries
         uses: actions/upload-artifact@v3.1.1
@@ -85,8 +85,8 @@ jobs:
       - name: Rename the binaries
         run: |
           cd bin/
-          mv libcombined_static.a      libxeddsa-macos-amd64.a
-          mv libcombined_dynamic.dylib libxeddsa-macos-amd64.dylib
+          mv static/libxeddsa.a      libxeddsa-macos-amd64.a
+          mv dynamic/libxeddsa.dylib libxeddsa-macos-amd64.dylib
 
       - name: Upload the binaries
         uses: actions/upload-artifact@v3.1.1
@@ -124,8 +124,8 @@ jobs:
       - name: Rename the binaries
         run: |
           cd bin/
-          mv libcombined_static.a      libxeddsa-macos-arm64.a
-          mv libcombined_dynamic.dylib libxeddsa-macos-arm64.dylib
+          mv static/libxeddsa.a      libxeddsa-macos-arm64.a
+          mv dynamic/libxeddsa.dylib libxeddsa-macos-arm64.dylib
 
       - name: Upload the binaries
         uses: actions/upload-artifact@v3.1.1
@@ -163,8 +163,8 @@ jobs:
       - name: Rename the binaries
         run: |
           cd bin/
-          mv libcombined_static.a   libxeddsa-linux-amd64.a
-          mv libcombined_dynamic.so libxeddsa-linux-amd64.so
+          mv static/libxeddsa.a   libxeddsa-linux-amd64.a
+          mv dynamic/libxeddsa.so libxeddsa-linux-amd64.so
 
       - name: Upload the binaries
         uses: actions/upload-artifact@v3.1.1

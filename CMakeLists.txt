@@ -5,15 +5,15 @@ include(CTest)
 
 add_subdirectory(ref10)
 
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin/static)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin/dynamic)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
 foreach (OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES})
     string(TOUPPER ${OUTPUTCONFIG} OUTPUTCONFIG)
+    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${PROJECT_SOURCE_DIR}/bin/static)
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${PROJECT_SOURCE_DIR}/bin/dynamic)
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${PROJECT_SOURCE_DIR}/bin)
-    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${PROJECT_SOURCE_DIR}/bin)
-    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${PROJECT_SOURCE_DIR}/bin)
 endforeach ()
 
 if (WIN32)
@@ -79,24 +79,8 @@ target_compile_definitions(xeddsa_objects PRIVATE SODIUM_DLL_EXPORT)
 target_compile_definitions(xeddsa_objects PRIVATE BUILD)
 
 add_library(xeddsa_static STATIC $<TARGET_OBJECTS:xeddsa_objects>)
-
-if (NOT DEFINED EMSCRIPTEN)
-    add_library(xeddsa_dynamic SHARED $<TARGET_OBJECTS:xeddsa_objects>)
-
-    if (WIN32)
-        # Correct the import library.
-        set_target_properties(xeddsa_dynamic PROPERTIES IMPORT_PREFIX "")
-        set_target_properties(xeddsa_dynamic PROPERTIES IMPORT_SUFFIX ".lib")
-    endif (WIN32)
-endif ()
-
-####################
-# combined library #
-####################
-
-add_library(combined_static STATIC CMakeLists.txt)
-set_target_properties(combined_static PROPERTIES LINKER_LANGUAGE C)
-target_link_libraries(combined_static PUBLIC
+set_target_properties(xeddsa_static PROPERTIES OUTPUT_NAME xeddsa)
+target_link_libraries(xeddsa_static PUBLIC
     xeddsa_objects
     crypto_sign_objects
     crypto_hash_objects
@@ -110,10 +94,12 @@ target_link_libraries(combined_static PUBLIC
     sodium_static
 )
 
+install(TARGETS xeddsa_static)
+
 if (NOT DEFINED EMSCRIPTEN)
-    add_library(combined_dynamic SHARED CMakeLists.txt)
-    set_target_properties(combined_dynamic PROPERTIES LINKER_LANGUAGE C)
-    target_link_libraries(combined_dynamic PUBLIC
+    add_library(xeddsa_dynamic SHARED $<TARGET_OBJECTS:xeddsa_objects>)
+    set_target_properties(xeddsa_dynamic PROPERTIES OUTPUT_NAME xeddsa)
+    target_link_libraries(xeddsa_dynamic PUBLIC
         xeddsa_objects
         crypto_sign_objects
         crypto_hash_objects
@@ -126,6 +112,14 @@ if (NOT DEFINED EMSCRIPTEN)
         kernelrandombytes_objects
         sodium_shared
     )
+
+    if (WIN32)
+        # Correct the import library.
+        set_target_properties(xeddsa_dynamic PROPERTIES IMPORT_PREFIX "")
+        set_target_properties(xeddsa_dynamic PROPERTIES IMPORT_SUFFIX ".lib")
+    endif (WIN32)
+
+    install(TARGETS xeddsa_dynamic)
 endif ()
 
 ##########################
@@ -147,23 +141,17 @@ target_include_directories(xeddsa_test_objects PRIVATE test)
 
 add_executable(xeddsa_test_static $<TARGET_OBJECTS:xeddsa_test_objects>)
 target_include_directories(xeddsa_test_static PRIVATE test)
-target_link_libraries(xeddsa_test_static combined_static sodium_static)
+target_link_libraries(xeddsa_test_static xeddsa_static sodium_static)
 
 if (NOT DEFINED EMSCRIPTEN)
     add_executable(xeddsa_test_dynamic $<TARGET_OBJECTS:xeddsa_test_objects>)
     target_include_directories(xeddsa_test_dynamic PRIVATE test)
-    target_link_libraries(xeddsa_test_dynamic combined_dynamic sodium_shared)
+    target_link_libraries(xeddsa_test_dynamic xeddsa_dynamic sodium_shared)
 endif ()
 
 ################
 # DEPENDENCIES #
 ################
-
-target_link_libraries(xeddsa_static crypto_sign_static sodium_static)
-
-if (NOT DEFINED EMSCRIPTEN)
-    target_link_libraries(xeddsa_dynamic crypto_sign_dynamic sodium_shared)
-endif ()
 
 target_include_directories(xeddsa_objects PUBLIC
     ref10/crypto_sign

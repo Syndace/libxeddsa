@@ -8,7 +8,7 @@ int main()
   unsigned long long i;
   unsigned long long j;
 
-  for (j = 0;j < 3;++j) {
+  for (j = 0;j < 10000;++j) {
     kernelrandombytes(x,sizeof x);
     for (i = 0;i < 256;++i) freq[i] = 0;
     for (i = 0;i < sizeof x;++i) ++freq[255 & (int) x[i]];
