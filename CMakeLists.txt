@@ -44,14 +44,12 @@ endif (WIN32)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}")
 
-set(sodium_USE_STATIC_LIBS YES)
-find_package(Sodium REQUIRED)
-set(sodium_static_INCLUDE_DIR ${sodium_INCLUDE_DIR})
-
-if (NOT DEFINED EMSCRIPTEN)
+if (DEFINED EMSCRIPTEN)
+    set(sodium_USE_STATIC_LIBS YES)
+    find_package(Sodium REQUIRED)
+else ()
     set(sodium_USE_STATIC_LIBS NO)
     find_package(Sodium REQUIRED)
-    set(sodium_dynamic_INCLUDE_DIR ${sodium_INCLUDE_DIR})
 
     if (WIN32)
         file(COPY "${sodium_DLL_DEBUG}" DESTINATION "${PROJECT_SOURCE_DIR}/bin/")
@@ -66,10 +64,7 @@ endif ()
 
 include_directories(include)
 include_directories(ref10/include)
-include_directories(${sodium_static_INCLUDE_DIR})
-if (NOT DEFINED EMSCRIPTEN)
-    include_directories(${sodium_dynamic_INCLUDE_DIR})
-endif ()
+include_directories(${sodium_INCLUDE_DIR})
 
 ##########
 # xeddsa #
@@ -107,7 +102,7 @@ target_link_libraries(xeddsa_static PUBLIC
     crypto_stream_objects
     crypto_core_objects
     kernelrandombytes_objects
-    sodium_static
+    sodium
 )
 
 install(TARGETS xeddsa_static)
@@ -126,7 +121,7 @@ if (NOT DEFINED EMSCRIPTEN)
         crypto_stream_objects
         crypto_core_objects
         kernelrandombytes_objects
-        sodium_shared
+        sodium
     )
 
     if (WIN32)
@@ -157,12 +152,12 @@ target_include_directories(xeddsa_test_objects PRIVATE test)
 
 add_executable(xeddsa_test_static $<TARGET_OBJECTS:xeddsa_test_objects>)
 target_include_directories(xeddsa_test_static PRIVATE test)
-target_link_libraries(xeddsa_test_static xeddsa_static sodium_static)
+target_link_libraries(xeddsa_test_static xeddsa_static sodium)
 
 if (NOT DEFINED EMSCRIPTEN)
     add_executable(xeddsa_test_dynamic $<TARGET_OBJECTS:xeddsa_test_objects>)
     target_include_directories(xeddsa_test_dynamic PRIVATE test)
-    target_link_libraries(xeddsa_test_dynamic xeddsa_dynamic sodium_shared)
+    target_link_libraries(xeddsa_test_dynamic xeddsa_dynamic sodium)
 endif ()
 
 ################
