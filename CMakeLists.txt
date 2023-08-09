@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(libxeddsa)
+project(libxeddsa VERSION 2.0.0)
 
 include(CTest)
 
@@ -110,6 +110,11 @@ install(TARGETS xeddsa_static)
 if (NOT DEFINED EMSCRIPTEN)
     add_library(xeddsa_dynamic SHARED $<TARGET_OBJECTS:xeddsa_objects>)
     set_target_properties(xeddsa_dynamic PROPERTIES OUTPUT_NAME xeddsa)
+    set_target_properties(xeddsa_dynamic PROPERTIES
+       VERSION ${CMAKE_PROJECT_VERSION}
+       SOVERSION ${CMAKE_PROJECT_VERSION_MAJOR}
+    )
+
     target_link_libraries(xeddsa_dynamic PUBLIC
         xeddsa_objects
         crypto_sign_objects
