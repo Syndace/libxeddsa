@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(libxeddsa VERSION 2.0.0)
+project(libxeddsa VERSION 2.0.0 LANGUAGES C)
 
 include(CTest)
 
