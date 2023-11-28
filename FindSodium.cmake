@@ -124,7 +124,7 @@ elseif (WIN32)
 
     if (MSVC)
         # detect target architecture
-        file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/arch.cpp" [=[
+        file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/arch.c" [=[
             #if defined _M_IX86
             #error ARCH_VALUE x86_32
             #elif defined _M_X64
@@ -132,7 +132,7 @@ elseif (WIN32)
             #endif
             #error ARCH_VALUE unknown
         ]=])
-        try_compile(_UNUSED_VAR "${CMAKE_CURRENT_BINARY_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/arch.cpp"
+        try_compile(_UNUSED_VAR "${CMAKE_CURRENT_BINARY_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/arch.c"
             OUTPUT_VARIABLE _COMPILATION_LOG
         )
         string(REGEX REPLACE ".*ARCH_VALUE ([a-zA-Z0-9_]+).*" "\\1" _TARGET_ARCH "${_COMPILATION_LOG}")
