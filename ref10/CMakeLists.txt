@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(ref10)
+project(ref10 LANGUAGES C)
 
 include(CTest)
 
