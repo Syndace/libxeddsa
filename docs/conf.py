@@ -24,7 +24,7 @@ if on_rtd:
 # -- Project information -----------------------------------------------------
 
 project = "libxeddsa"
-copyright = "2022, Tim Henkes (Syndace)"
+copyright = "2025, Tim Henkes (Syndace)"
 author = "Tim Henkes (Syndace)"
 
 

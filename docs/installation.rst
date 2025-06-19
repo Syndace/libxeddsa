@@ -1,7 +1,7 @@
 Installation
 ============
 
-Prebuilt binaries are available for Linux (amd64), MacOS (amd64 & arm64) and Windows (amd64) and attached to `the releases <https://github.com/Syndace/libxeddsa/releases>`_. They can also be found in the build artifacts of the `Build & Test workflow <https://github.com/Syndace/libxeddsa/actions/workflows/build-and-test.yml>`_. To use libxeddsa, `libsodium <https://download.libsodium.org/doc/>`_ has to be installed on the system.
+Prebuilt binaries are available for Linux (amd64 & arm64), MacOS (amd64 & arm64) and Windows (amd64) and attached to `the releases <https://github.com/Syndace/libxeddsa/releases>`_. They can also be found in the build artifacts of the `Build & Test workflow <https://github.com/Syndace/libxeddsa/actions/workflows/build-and-test.yml>`_. To use libxeddsa, `libsodium <https://download.libsodium.org/doc/>`_ has to be installed on the system.
 
 The library can be built with `CMake <https://cmake.org/>`_ and was tested to build successfully on Linux, MacOS and Windows.
 
@@ -62,8 +62,8 @@ libsodium supports compilation with Emscripten and comes with the scripts requir
 
     $ mkdir /tmp/libxeddsa-emscripten/
     $ cd /tmp/libxeddsa-emscripten/
-    $ wget https://download.libsodium.org/libsodium/releases/libsodium-1.0.18-stable.tar.gz
-    $ tar xzf libsodium-1.0.18-stable.tar.gz
+    $ wget https://download.libsodium.org/libsodium/releases/libsodium-1.0.20-stable.tar.gz
+    $ tar xzf libsodium-1.0.20-stable.tar.gz
     $ cd libsodium-stable/
     $ dist-build/emscripten.sh --standard
 

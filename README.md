@@ -42,7 +42,7 @@ This library solves this issue by offering a digital signing function that accep
 
 ## Installation ##
 
-Prebuilt binaries are available for Linux (amd64), MacOS (amd64 & arm64) and Windows (amd64) and attached to [the releases](https://github.com/Syndace/libxeddsa/releases). They can also be found in the build artifacts of the [Build & Test workflow](https://github.com/Syndace/libxeddsa/actions/workflows/build-and-test.yml). To use libxeddsa, [libsodium](https://download.libsodium.org/doc/) has to be installed on the system.
+Prebuilt binaries are available for Linux (amd64 & arm64), MacOS (amd64 & arm64) and Windows (amd64) and attached to [the releases](https://github.com/Syndace/libxeddsa/releases). They can also be found in the build artifacts of the [Build & Test workflow](https://github.com/Syndace/libxeddsa/actions/workflows/build-and-test.yml). To use libxeddsa, [libsodium](https://download.libsodium.org/doc/) has to be installed on the system.
 
 Instructions for building from source, including compilation to WebAssembly using Emscripten, can be found in [the documentation](https://libxeddsa.readthedocs.io/).
 
