@@ -20,6 +20,8 @@ jobs:
         run: |
           curl -o libsodium-1.0.20-stable-msvc.zip https://download.libsodium.org/libsodium/releases/libsodium-1.0.20-stable-msvc.zip
           unzip libsodium-1.0.20-stable-msvc.zip
+          mv libsodium/x64/Debug/v143 libsodium/x64/Debug/v144
+          mv libsodium/x64/Release/v143 libsodium/x64/Release/v144
 
       - name: Run cmake
         shell: bash
@@ -106,7 +108,7 @@ jobs:
         run: |
           brew uninstall --ignore-dependencies libsodium
           brew fetch --force --bottle-tag=arm64_sonoma libsodium | tee brew_output
-          downloaded_to=$(grep "Downloaded to" brew_output)
+          downloaded_to=$(grep "Downloaded to" brew_output | tail -n 1)
           downloaded_to_split=($downloaded_to)
           brew install ${downloaded_to_split[2]}
 
