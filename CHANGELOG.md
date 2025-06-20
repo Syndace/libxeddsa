@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [2.0.1] - 20th of June, 2025
+
+### Changed
+- Nothing about the functionality of libxeddsa was changed, however adjustments to the build system were made and libsodium has been updated.
+
 ## [2.0.0] - 2nd of April, 2022
 
 ### Added
@@ -22,6 +27,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 - An implementation of XEdDSA for Curve25519 keys, consisting of a function for signing using a Curve25519 private key and public key conversion from Curve25519 to Ed25519.
 
-[Unreleased]: https://github.com/Syndace/libxeddsa/compare/v2.0.0...HEAD
+[Unreleased]: https://github.com/Syndace/libxeddsa/compare/v2.0.1...HEAD
+[2.0.1]: https://github.com/Syndace/libxeddsa/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/Syndace/libxeddsa/compare/v1.0.0...v2.0.0
 [1.0.0]: https://github.com/Syndace/libxeddsa/releases/tag/v1.0.0
