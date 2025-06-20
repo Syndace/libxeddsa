@@ -1,6 +1,10 @@
 [![Documentation Status](https://readthedocs.org/projects/libxeddsa/badge/?version=latest)](https://libxeddsa.readthedocs.io/)
 [![Build Status](https://github.com/Syndace/libxeddsa/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/Syndace/libxeddsa/actions/workflows/build-and-test.yml)
 
+**_This repository is actively maintained._**
+
+Activity is low at times because this project is already feature-complete, documented and tested.
+
 # libxeddsa #
 
 A toolkit around Curve25519 and Ed25519 key pairs, with a focus on conversion between the two.
